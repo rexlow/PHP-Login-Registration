@@ -1,6 +1,4 @@
 <?php
-
-// security, user must come from index page and __CONFIG__ must be defined
 if (!defined('__CONFIG__')) {
   exit('You do not have a config file, go away');
 }
@@ -27,8 +25,7 @@ class DB {
       new DB();
     }
 
-    // return the writeable db connection
-    return self::$con;
+    return self::$con; // return the writeable db connection
   }
 }
 
