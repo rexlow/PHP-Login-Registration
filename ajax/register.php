@@ -30,6 +30,10 @@
       if ($findUser->rowCount() == 1) {
         $return['error'] = "You already have an account";
       } else {
+
+        // hash password
+        $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+
         // insert user into database
         $addUser = $con->prepare("INSERT INTO users(email, password) VALUES(:email, :password)");
         $addUser->bindParam(':email', $email, PDO::PARAM_STR);
