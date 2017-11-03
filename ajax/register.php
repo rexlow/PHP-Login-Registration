@@ -1,13 +1,7 @@
 <?php 
     define('__CONFIG__', true);
     require_once "../inc/config.php";  
-
-    /*
-     * always return in json
-     */
     header('Content-Type: application/json'); 
-
-    $array = ['test', 'test2'];
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
