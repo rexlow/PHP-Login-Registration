@@ -11,11 +11,15 @@
       $return = [];
 
       /*
+       * form data
+       */
+      $email = Filter::String($_POST['email']);
+
+      /*
        * sanitize password
        * make sure user does not exist and LOWERCASE the email returns
        * bind parameter to pull variable outside of SQL statements, also less chance of SQL injection
        */
-      $email = Filter::String($_POST['email']);
       $findUser = $con->prepare("SELECT user_id FROM users WHERE email = LOWER(:email) LIMIT 1");
       $findUser->bindParam(':email', $email, PDO::PARAM_STR);
       $findUser->execute();
