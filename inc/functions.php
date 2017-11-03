@@ -27,6 +27,9 @@
     $findUser->bindParam(':email', $email, PDO::PARAM_STR);
     $findUser->execute();
 
+    /*
+     * if 3rd parameter is true, return the user object instead
+     */
     if ($return_assoc) {
       return $findUser->fetch(PDO::FETCH_ASSOC);
     }
