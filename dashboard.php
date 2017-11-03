@@ -1,12 +1,8 @@
 <?php 
-    define('__CONFIG__', true);     // allow the configs
-    require_once "inc/config.php";  // require the configs
+    define('__CONFIG__', true);  
+    require_once "inc/config.php";
     
-    if (isset($_SESSION['user_id'])) {
-      
-    } else {
-      header("Location: ./login.php"); exit;
-    }
+    checkIfUserIsLoggedIn();
 ?>
 
 <html lang="en">
