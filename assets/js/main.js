@@ -18,7 +18,7 @@ $(document).on("submit", "form.js-register, form.js-login", function(event) {
     return false
   }
 
-  error.hide(); // hide error text when password length is more than 11
+  error.hide(); // hide error text when password length is more than 8
 
   // ajax
   $.ajax({
