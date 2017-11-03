@@ -15,14 +15,7 @@
        */
       $email = Filter::String($_POST['email']);
 
-      /*
-       * sanitize password
-       * make sure user does not exist and LOWERCASE the email returns
-       * bind parameter to pull variable outside of SQL statements, also less chance of SQL injection
-       */
-      $findUser = $con->prepare("SELECT user_id FROM users WHERE email = LOWER(:email) LIMIT 1");
-      $findUser->bindParam(':email', $email, PDO::PARAM_STR);
-      $findUser->execute();
+      $user_found = findUser($con, $email);
 
       /*
        * check whether user exists
@@ -30,7 +23,7 @@
        * insert user into database
        * return session
        */
-      if ($findUser->rowCount() == 1) {
+      if ($user_found) {
         $return['error'] = "You already have an account";
         $return['is_logged_in'] = false;
       } else {

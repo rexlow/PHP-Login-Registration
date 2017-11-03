@@ -12,30 +12,22 @@
 
       /*
        * form data
+       * note that 3rd parameter, true is passed in as well to retrieve data
        */
       $email = Filter::String($_POST['email']);
       $password = $_POST['password'];
 
-      /*
-       * sanitize password
-       * make sure user does not exist and LOWERCASE the email returns
-       * bind parameter to pull variable outside of SQL statements, also less chance of SQL injection
-       */
-      $findUser = $con->prepare("SELECT user_id, password FROM users WHERE email = LOWER(:email) LIMIT 1");
-      $findUser->bindParam(':email', $email, PDO::PARAM_STR);
-      $findUser->execute();
+      $user_found = findUser($con, $email, true);
 
       /*
-       * check whether user exists
        * PDO::FETCH_ASSOC returns an array that contains user object
        * cast variable properly
        * un-hash password, check if equal with form data
        * return session
        */
-      if ($findUser->rowCount() == 1) {
-        $User = $findUser->fetch(PDO::FETCH_ASSOC);
-        $user_id = (int) $User['user_id'];
-        $hash = (string) $User['password'];
+      if ($user_found) {
+        $user_id = (int) $user_found['user_id'];
+        $hash = (string) $user_found['password'];
 
         if (password_verify($password, $hash)) {
           $return['redirect'] = './dashboard.php';
