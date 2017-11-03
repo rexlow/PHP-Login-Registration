@@ -1,41 +1,42 @@
 <?php 
-    // allow the configs
-    define('__CONFIG__', true);     
-
-    // require the configs
+    define('__CONFIG__', true);
     require_once "../inc/config.php";  
 
-    // always return in json
+    /*
+     * always return in json
+     */
     header('Content-Type: application/json'); 
 
     $array = ['test', 'test2'];
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-      // return an array that contains data
+      /*
+       * return an array that contains data
+       */
       $return = [];
 
-      // sanitize password
+      /*
+       * sanitize password
+       * make sure user does not exist and LOWERCASE the email returns
+       * bind parameter to pull variable outside of SQL statements, also less chance of SQL injection
+       */
       $email = Filter::String($_POST['email']);
-
-      // make sure user does not exist and LOWERCASE the email returns
       $findUser = $con->prepare("SELECT user_id FROM users WHERE email = LOWER(:email) LIMIT 1");
-
-      // bind parameter to pull variable outside of SQL statements, also less chance of SQL injection
       $findUser->bindParam(':email', $email, PDO::PARAM_STR);
-
-      // execute query
       $findUser->execute();
-      
+
+      /*
+       * check whether user exists
+       * hash password
+       * insert user into database
+       */
       if ($findUser->rowCount() == 1) {
         $return['error'] = "You already have an account";
       } else {
-
-        // hash password
         $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
 
-        // insert user into database
-        $addUser = $con->prepare("INSERT INTO users(email, password) VALUES(:email, :password)");
+        $addUser = $con->prepare("INSERT INTO users(LOWER(email), password) VALUES(:email, :password)");
         $addUser->bindParam(':email', $email, PDO::PARAM_STR);
         $addUser->bindParam(':password', $password, PDO::PARAM_STR);
         $addUser->execute();
