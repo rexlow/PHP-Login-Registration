@@ -15,17 +15,27 @@
       // return an array that contains data
       $return = [];
 
-      // sanitize email
+      // sanitize password
       $email = Filter::String($_POST['email']);
 
-      // make sure user does not exist
-      $findUser = $con->prepare("SELECT user_id FROM users WHERE email = :email LIMIT 1");
+      // make sure user does not exist and LOWERCASE the email returns
+      $findUser = $con->prepare("SELECT user_id FROM users WHERE email = LOWER(:email) LIMIT 1");
 
       // bind parameter to pull variable outside of SQL statements, also less chance of SQL injection
       $findUser->bindParam(':email', $email, PDO::PARAM_STR);
 
       // execute query
       $findUser->execute();
+      
+      if ($findUser->rowCount() == 1) {
+        $return['error'] = "You already have an account";
+      } else {
+        // insert user into database
+        $addUser = $con->prepare("INSERT INTO users(email, password) VALUES(:email, :password)");
+        $addUser->bindParam(':email', $email, PDO::PARAM_STR);
+        $addUser->bindParam(':password', $password, PDO::PARAM_STR);
+        $addUser->execute();
+      }
 
       $return['redirect'] = './dashboard.php'; 
       $return['name'] = 'rex';
