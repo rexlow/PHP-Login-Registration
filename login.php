@@ -1,6 +1,7 @@
 <?php 
-    define('__CONFIG__', true);     // allow the configs
-    require_once "inc/config.php";  // require the configs
+    define('__CONFIG__', true);   
+	require_once "inc/config.php";
+	ifUserIsLoggedIn();
 ?>
 
 <html lang="en">

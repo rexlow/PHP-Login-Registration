@@ -9,4 +9,10 @@
       header("Location: ./login.php"); exit;
     }
   }
+
+  function ifUserIsLoggedIn() {
+    if (isset($_SESSION['user_id'])) {
+      header("Location: ./dashboard.php");
+    }
+  }
 ?>
