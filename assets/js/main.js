@@ -1,5 +1,5 @@
 // bind all our listeners to DOM
-$(document).on("submit", "form.js-register", function(event) {
+$(document).on("submit", "form.js-register", function (event) {
   event.preventDefault();
 
   var form = $(this);
@@ -22,26 +22,26 @@ $(document).on("submit", "form.js-register", function(event) {
 
   // ajax
   $.ajax({
-    type: 'POST',
-    url: './ajax/register.php',
-    data: dataObject,
-    dataType: 'json',
-    async: true
-  })
-  .done((data) => {
-    console.log(data)
-    if (data.redirect !== undefined) {
-      window.location = data.redirect;
-    }
-
-    alert(data.name);
-  })
-  .fail((e) => {
-    console.log(e)
-  })
-  .always((data) => {
-    console.log(data)
-  })
+      type: 'POST',
+      url: './ajax/register.php',
+      data: dataObject,
+      dataType: 'json',
+      async: true
+    })
+    .done((data) => {
+      console.log(data)
+      if (data.redirect !== undefined) {
+        window.location = data.redirect;
+      } else if (data.error !== undefined) {
+        error.text(data.error).show();
+      }
+    })
+    .fail((e) => {
+      console.log(e)
+    })
+    .always((data) => {
+      console.log(data)
+    })
 
   return false;
 })
