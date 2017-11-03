@@ -15,6 +15,18 @@
       // return an array that contains data
       $return = [];
 
+      // sanitize email
+      $email = Filter::String($_POST['email']);
+
+      // make sure user does not exist
+      $findUser = $con->prepare("SELECT user_id FROM users WHERE email = :email LIMIT 1");
+
+      // bind parameter to pull variable outside of SQL statements, also less chance of SQL injection
+      $findUser->bindParam(':email', $email, PDO::PARAM_STR);
+
+      // execute query
+      $findUser->execute();
+
       $return['redirect'] = './dashboard.php'; 
       $return['name'] = 'rex';
 
