@@ -1,7 +1,7 @@
 <?php 
     define('__CONFIG__', true);   
 		require_once "inc/config.php";
-		ifUserIsLoggedIn();
+		Page::ifUserIsLoggedIn();
 ?>
 
 <html lang="en">

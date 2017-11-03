@@ -12,12 +12,12 @@
 
       /*
        * form data
-       * note that 3rd parameter, true is passed in as well to retrieve data
+       * note that 2nd parameter, true is passed in as well to retrieve data
        */
       $email = Filter::String($_POST['email']);
       $password = $_POST['password'];
 
-      $user_found = findUser($con, $email, true);
+      $user_found = User::Find($email, true);
 
       /*
        * PDO::FETCH_ASSOC returns an array that contains user object
